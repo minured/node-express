@@ -24,3 +24,8 @@ POST {{url}}/login
 
 ### 用户列表
 GET {{url}}/users 
+
+
+### 个人信息
+GET {{url}}/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZTg4YjU0MmM3ZDc4MmQ0OGZhYjU1ZCIsImlhdCI6MTYwOTA3NTU2OX0.yYY5iXHB0tvb2vUEN4RkDDM7WsLXXUNCZkk4dZAuT8I

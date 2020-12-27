@@ -2,12 +2,22 @@ const express = require("express");
 const { User } = require("./db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
 const { PRIVATE_KEY } = require("./private");
 
+// TODO 错误处理
+
 const app = express();
-// express
 app.use(express.json());
+
+// express中间件(函数), 路由的每个回调其实都是中间件
+const authUser = async (req, res, next) => {
+  const reqToken = String(req.headers.authorization).split(" ").pop();
+  const { id } = jwt.verify(reqToken, PRIVATE_KEY);
+  // 挂到req上，让下一个中间件访问
+  req.user = await User.findById(id);
+
+  next();
+};
 
 app.get("/api", async (req, res) => {
   res.send("node server api");
@@ -42,6 +52,7 @@ app.post("/api/login", async (req, res) => {
   }
 
   // 生成token
+  // 把数据库_id传进去，作为个人唯一标识，用于解密识别身份
   const token = jwt.sign(
     {
       id: user._id,
@@ -55,6 +66,16 @@ app.post("/api/login", async (req, res) => {
     token,
   });
 });
+
+app.get("/api/profile", authUser, async (req, res) => {
+  res.send(req.user);
+});
+// 查询用户订单   
+// app.get("/api/order", authUser, async (req, res) => {
+//   const order = Order.find().where({
+//     user: req.user._id,
+//   });
+// });
 
 app.listen(1234, () => {
   console.log(`server on http://localhost:1234`);
