@@ -1,6 +1,6 @@
 const express = require("express");
 const { User } = require("./db");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { PRIVATE_KEY } = require("./private");
 
@@ -66,11 +66,11 @@ app.post("/api/login", async (req, res) => {
     token,
   });
 });
-
 app.get("/api/profile", authUser, async (req, res) => {
   res.send(req.user);
 });
-// 查询用户订单   
+
+// 查询用户订单
 // app.get("/api/order", authUser, async (req, res) => {
 //   const order = Order.find().where({
 //     user: req.user._id,
