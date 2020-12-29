@@ -1,13 +1,15 @@
 const express = require("express");
-const { User } = require("./db");
+const { User } = require("./model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { PRIVATE_KEY } = require("./private");
+const cors = require("cors");
 
 // TODO 错误处理
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 // express中间件(函数), 路由的每个回调其实都是中间件
 const authUser = async (req, res, next) => {
@@ -15,25 +17,37 @@ const authUser = async (req, res, next) => {
   const { id } = jwt.verify(reqToken, PRIVATE_KEY);
   // 挂到req上，让下一个中间件访问
   req.user = await User.findById(id);
-
   next();
 };
 
 app.get("/api", async (req, res) => {
   res.send("node server api");
 });
-
 app.get("/api/users", async (req, res) => {
   const userList = await User.find();
   res.send(userList);
 });
 app.post("/api/register", async (req, res) => {
-  const user = await User.create({
-    username: req.body.username,
-    password: req.body.password,
+  let user = null;
+  // TODO 精确异常处理
+  try {
+    user = await User.create({
+      username: req.body.username,
+      password: req.body.password,
+    });
+  } catch (err) {
+    console.log(err);
+    res.send({
+      message: "用户名已存在",
+    });
+    return;
+  }
+  res.send({
+    message: "注册成功",
+    userInfo: {
+      username: user.username,
+    },
   });
-  console.log(user);
-  res.send(user);
 });
 app.post("/api/login", async (req, res) => {
   const user = await User.findOne({
