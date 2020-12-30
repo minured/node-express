@@ -1,12 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>test</title>
-</head>
-<body>
-    
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="usernameEl" />
+    <input type="password" name="" id="passwordEl" />
+    <button id="loginBtn">登录</button>
+    <button id="registerBtn">注册</button>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.min.js"></script>
+    <script>
+      const register = () => {
+        url = "http://localhost:1234/api/register";
+        username = usernameEl.value;
+        password = passwordEl.value;
+        if (!username || !password) {
+          console.log("不能为空");
+          return;
+        }
+        axios
+          .post(url, { username, password })
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+      const login = () => {
+        console.log("login");
+        url = "http://localhost:1234/api/login";
+        username = usernameEl.value;
+        password = passwordEl.value;
+        if (!username || !password) {
+          console.log("不能为空");
+          return;
+        }
+        axios
+          .post(url, { username, password })
+          .then((res) => {
+            console.log(res.data);         
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+      loginBtn.addEventListener("click", login);
+      registerBtn.addEventListener("click", register);
+    </script>
+  </body>
 </html>

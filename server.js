@@ -1,9 +1,10 @@
 const express = require("express");
-const { User } = require("./model");
+const { User, Video } = require("./model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { PRIVATE_KEY } = require("./private");
 const cors = require("cors");
+const fs = require("fs");
 
 // TODO 错误处理
 
@@ -23,6 +24,8 @@ const authUser = async (req, res, next) => {
 app.get("/api", async (req, res) => {
   res.send("node server api");
 });
+
+// 登陆注册
 app.get("/api/users", async (req, res) => {
   const userList = await User.find();
   res.send(userList);
@@ -36,6 +39,7 @@ app.post("/api/register", async (req, res) => {
       password: req.body.password,
     });
   } catch (err) {
+    console.log("mongodb 插入错误");
     console.log(err);
     res.send({
       message: "用户名已存在",
@@ -60,7 +64,7 @@ app.post("/api/login", async (req, res) => {
   }
   const isPasswordValid = bcrypt.compareSync(req.body.password, user.password);
   if (!isPasswordValid) {
-    return res.status(422).send({
+    return res.status(200).send({
       message: "密码不正确",
     });
   }
@@ -80,8 +84,31 @@ app.post("/api/login", async (req, res) => {
     token,
   });
 });
+
+// 视频
+app.post("/api/video/create", async (req, res) => {
+  const video = await Video.create({
+    videoId: req.body.videoId,
+    title: req.body.title,
+  });
+  console.log(video);
+  res.send(video);
+});
+
+app.get("/api/videos", async (req, res) => {
+  const videos = await Video.find();
+  console.log(videos);
+  res.send(videos);
+});
+
+// 其他
 app.get("/api/profile", authUser, async (req, res) => {
   res.send(req.user);
+});
+app.get("/api/test", async (req, res) => {
+  const fileRes = await fs.readFileSync("./src/test.html");
+  res.setHeader("Content-Type", "text/html");
+  res.send(fileRes);
 });
 
 // 查询用户订单
