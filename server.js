@@ -94,11 +94,22 @@ app.post("/api/video/create", async (req, res) => {
   console.log(video);
   res.send(video);
 });
-
 app.get("/api/videos", async (req, res) => {
   const videos = await Video.find();
   console.log(videos);
   res.send(videos);
+});
+
+// 收藏视频
+app.post("/api/collect", authUser, async (req, res) => {
+  const { videoId } = req.body;
+  const userVideoRow = await UserVideo.create({
+    userId: req.user._id,
+    videoId: videoId,
+  });
+  console.log(userVideoRow);
+
+  res.send(userVideoRow);
 });
 
 // 其他

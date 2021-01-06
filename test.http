@@ -48,10 +48,11 @@ POST {{url}}/video/create
 GET {{url}}/videos
 {{json}}
 
-### 收藏视频
+### 收藏视频, 应该发送token
 ### 首先是登陆状态，服务器获取到请求头的token，前台传入videoId
-POST {{url}}/video_collection
+POST {{url}}/collect
 {{json}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZTg4YjU0MmM3ZDc4MmQ0OGZhYjU1ZCIsImlhdCI6MTYwOTA3NTU2OX0.yYY5iXHB0tvb2vUEN4RkDDM7WsLXXUNCZkk4dZAuT8I
 
 {
     "videoId": "bv002"

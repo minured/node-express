@@ -29,7 +29,13 @@ const videoUserInfo = mongoose.Schema({
 // 个人信息
 const userInfoSchema = mongoose.Schema({
   username: { type: String },
-  liked: { type: String },
+  liked: { type: Array },
+});
+
+// 收藏视频
+const userVideoSchema = mongoose.Schema({
+  userId: { type: String },
+  videoId: { type: String },
 });
 
 // 注册登录
@@ -46,9 +52,11 @@ const userSchema = new mongoose.Schema({
 });
 
 // 创建模型实例，入参1 集合名；入参2，数据模型
+const UserVideo = mongoose.model("UserVideo", userVideoSchema);
 const User = mongoose.model("User", userSchema);
 const Video = mongoose.model("Video", videoSchema);
-const UserInfo = mongoose.model("UserInfo", );
+// const UserInfo = mongoose.model("UserInfo", userInfoSchema);
+
 
 // 删除集合
 // User.db.dropCollection("users");
