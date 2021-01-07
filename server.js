@@ -1,10 +1,11 @@
 const express = require("express");
-const { User, Video } = require("./model");
+const { User, Video, UserVideo } = require("./model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { PRIVATE_KEY } = require("./private");
 const cors = require("cors");
 const fs = require("fs");
+const { type } = require("os");
 
 // TODO 错误处理
 
@@ -110,6 +111,53 @@ app.post("/api/collect", authUser, async (req, res) => {
   console.log(userVideoRow);
 
   res.send(userVideoRow);
+});
+
+// 用户是否收藏了某视频
+app.post("/api/checkCollection", authUser, async (req, res) => {
+  const { videoId } = req.body;
+  console.log(videoId);
+  console.log(req.user._id);
+  const checkRes = await UserVideo.find({
+    userId: req.user._id,
+  });
+  for (let i = 0; i < checkRes.length; i++) {
+    if (checkRes[i]["videoId"] === videoId) {
+      res.send({
+        isCollect: true,
+        username: req.user.username,
+        videoId,
+      });
+      return;
+    }
+  }
+
+  res.send(req.user);
+});
+
+// 用户收藏列表
+app.get("/api/collections", authUser, async (req, res) => {
+  console.log(req.user);
+  const resFind = await UserVideo.find({
+    userId: req.user._id,
+  });
+  const collections = resFind.map((item) => {
+    return item.videoId;
+  });
+  res.send(collections);
+});
+
+// 查询视频的收藏用户
+app.post("/api/query/users", authUser, async (req, res) => {
+  const resFind = await UserVideo.find({
+    videoId: req.body.videoId,
+  });
+  const users = resFind.map((item) => {
+    return item.userId;
+  });
+  console.log(users);
+
+  res.send(users);
 });
 
 // 其他

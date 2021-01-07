@@ -64,4 +64,5 @@ const Video = mongoose.model("Video", videoSchema);
 module.exports = {
   User,
   Video,
+  UserVideo
 };

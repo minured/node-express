@@ -14,7 +14,7 @@ POST {{url}}/register
 {{json}}
 
 {
-    "username": "wdwada",
+    "username": "test4",
     "password": "12345678"
 }
 
@@ -23,12 +23,17 @@ POST {{url}}/login
 {{json}}
 
 {
-    "username": "minu",
-    "password": "123456"
+    "username": "test3",
+    "password": "12345678"
 }
 
 ### 用户列表
 GET {{url}}/users 
+
+
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjZkMzI0YTc5N2MxNGYzNGEzOTQ2ZiIsImlhdCI6MTYxMDAxMTQ1NH0.dhERG0Goc-9KBN3gqVt7vDDHvuNdlCmua7YxQMYKQQg
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjZkMzI4YTc5N2MxNGYzNGEzOTQ3MCIsImlhdCI6MTYxMDAxMTQ5NH0.ptarQKWvfOnuljL47jz3DAc5FFvwuh5OauAgSzUYse8
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjZkMzJiYTc5N2MxNGYzNGEzOTQ3MSIsImlhdCI6MTYxMDAxMTUyMX0.BS23yRztz8LnoIZsr8pIWOmlm5ivno2zNvy8mffJuXw
 
 
 ### 个人信息
@@ -52,11 +57,42 @@ GET {{url}}/videos
 ### 首先是登陆状态，服务器获取到请求头的token，前台传入videoId
 POST {{url}}/collect
 {{json}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjZkMzI0YTc5N2MxNGYzNGEzOTQ2ZiIsImlhdCI6MTYxMDAxMTQ1NH0.dhERG0Goc-9KBN3gqVt7vDDHvuNdlCmua7YxQMYKQQg
+
+{
+    "videoId": "bv002"
+}
+
+### 查询收藏：
+### 用户是否收藏了某视频
+POST {{url}}/checkCollection
+{{json}}
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZTg4YjU0MmM3ZDc4MmQ0OGZhYjU1ZCIsImlhdCI6MTYwOTA3NTU2OX0.yYY5iXHB0tvb2vUEN4RkDDM7WsLXXUNCZkk4dZAuT8I
 
 {
     "videoId": "bv002"
 }
+
+### 用户收藏列表
+GET {{url}}/collections
+{{json}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjZkMzI0YTc5N2MxNGYzNGEzOTQ2ZiIsImlhdCI6MTYxMDAxMTQ1NH0.dhERG0Goc-9KBN3gqVt7vDDHvuNdlCmua7YxQMYKQQg
+
+
+
+### 视频的收藏用户列表
+POST {{url}}/query/users
+{{json}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZjZkMzI0YTc5N2MxNGYzNGEzOTQ2ZiIsImlhdCI6MTYxMDAxMTQ1NH0.dhERG0Goc-9KBN3gqVt7vDDHvuNdlCmua7YxQMYKQQg
+
+{
+    "videoId": "bv002"
+}
+
+
+
+
+
 
 
 
